@@ -1,17 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div v-for="item in this.arrayGifs" :key="item.images.original.url">
+      <img alt="Vue logo" :src="item.images.original.url" height="200" width="200">
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import axios from 'axios';
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data: () => {
+    return {
+      arrayGifs: [],
+    }
+  },
+  created() {
+    axios.get('http://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=cat')
+    .then((response) => {
+      this.arrayGifs = response.data.data
+      console.log(this.arrayGifs);
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 }
 </script>
